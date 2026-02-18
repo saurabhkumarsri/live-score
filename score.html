@@ -38,7 +38,7 @@ body {
 
 <script>
 async function loadScore(){
-  const res = await fetch("https://api.cricapi.com/v1/currentMatches?apikey=YOUR_API_KEY&offset=0");
+  const res = await fetch("https://api.cricapi.com/v1/currentMatches?apikey=7dfa1702-9f68-44e4-b18e-7aa2acfb6ffe&offset=0");
   const data = await res.json();
 
   const match = data.data.find(m =>
