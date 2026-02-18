@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body {
+  margin:0;
+  background:transparent;
+  font-family:Arial;
+  color:white;
+}
+.scorebox{
+  background:rgba(0,0,0,0.8);
+  padding:15px;
+  border-radius:15px;
+  text-align:center;
+  width:400px;
+}
+.team{
+  font-size:26px;
+  font-weight:bold;
+}
+.status{
+  margin-top:8px;
+  font-size:18px;
+  color:#00ffcc;
+}
+</style>
+</head>
+<body>
+
+<div class="scorebox">
+  <div id="match"></div>
+  <div class="team" id="team1"></div>
+  <div class="team" id="team2"></div>
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+async function loadScore(){
+  const res = await fetch("https://api.cricapi.com/v1/currentMatches?apikey=YOUR_API_KEY&offset=0");
+  const data = await res.json();
+
+  const match = data.data.find(m =>
+    m.name.includes("Pakistan") &&
+    m.name.includes("Namibia")
+  );
+
+  if(match){
+
+    document.getElementById("match").innerText =
+      match.name;
+
+    // Pakistan Inning
+    const pak = match.score.find(s =>
+      s.inning.toLowerCase().includes("pakistan")
+    );
+
+    // Namibia Inning
+    const nam = match.score.find(s =>
+      s.inning.toLowerCase().includes("namibia")
+    );
+
+    document.getElementById("team1").innerText =
+      "PAK: " + pak.r + "/" + pak.w + " (" + pak.o + " ov)";
+
+    if(nam){
+      document.getElementById("team2").innerText =
+        "NAM: " + nam.r + "/" + nam.w + " (" + nam.o + " ov)";
+    }
+
+    document.getElementById("status").innerText =
+      match.status;
+  }
+}
+
+loadScore();
+setInterval(loadScore,15000);
+</script>
+
+</body>
+</html>
+
